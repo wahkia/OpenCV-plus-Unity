@@ -57,33 +57,53 @@ jobs:
   android:
     runs-on: ubuntu-latest
     timeout-minutes: 150
+
     steps:
       - uses: actions/checkout@v4
-        with: { submodules: true }
-      - name: Cache OpenCV build (android)
+        with:
+          submodules: true
+
+      - name: Cache OpenCV build (android API 29)
         uses: actions/cache@v4
         with:
           path: |
             build/opencv-android
             build/artifacts/android
-          key: opencv-android-${{ hashFiles('Utils/build-opencv.sh', 'Utils/opencv_options_unity.cmake', 'Utils/patches/opencv-cmake-min-3.5.patch', 'Utils/patches/opencv-contrib-superres-ios.patch') }}
+
+          # IMPORTANT:
+          # Different cache name so GitHub does not reuse
+          # the old API-35 OpenCV build.
+          key: opencv-android-api29-${{ hashFiles('Utils/build-opencv.sh', 'Utils/opencv_options_unity.cmake', 'Utils/patches/opencv-cmake-min-3.5.patch', 'Utils/patches/opencv-contrib-superres-ios.patch') }}
+
           restore-keys: |
-            opencv-android-
+            opencv-android-api29-
+
       - name: Install cmake
-        run: sudo apt-get update && sudo apt-get install -y cmake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake
+
       - id: setup-ndk
         uses: nttld/setup-ndk@v1
         with:
-          # NDK 28+ required for Android 15+ 16KB page-size support
+          # Keep NDK 28.
+          # NDK version and minimum Android API are separate things.
           ndk-version: 28.2.13676358
           add-to-path: false
-      - name: Build Android (arm64-v8a)
+
+      - name: Build Android (arm64-v8a, API 29)
         env:
           ANDROID_NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+
+          # Huawei P20 Pro is API 29.
+          ANDROID_NATIVE_API_LEVEL: "29"
+          ANDROID_PLATFORM: "android-29"
+
         run: bash Utils/build.sh android
+
       - uses: actions/upload-artifact@v4
         with:
-          name: plugin-android
+          name: plugin-android-api29
           path: bin/OpenCvSharpExtern-1.0/full/android
 
   linux:
