@@ -103,7 +103,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: plugin-android-api29
+          name: plugin-android
           path: bin/OpenCvSharpExtern-1.0/full/android
 
   linux:
