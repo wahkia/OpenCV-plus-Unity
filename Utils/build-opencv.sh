@@ -82,7 +82,7 @@ case "$PLATFORM" in
     # OpenCV 4.11 uses the NDK's own CMake toolchain (android.toolchain.cmake was removed).
     cmake -S "$OCV" -B "$BLD" "${COMMON[@]}" \
       -D CMAKE_TOOLCHAIN_FILE="$ANDROID_NDK/build/cmake/android.toolchain.cmake" \
-      -D ANDROID_ABI=arm64-v8a -D ANDROID_PLATFORM=android-35 \
+      -D ANDROID_ABI=arm64-v8a -D ANDROID_PLATFORM=android-29 \
       -D ANDROID_STL=c++_shared
     ;;
   windows)
