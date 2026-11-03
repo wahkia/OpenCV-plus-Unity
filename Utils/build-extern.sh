@@ -92,7 +92,7 @@ case "$PLATFORM" in
       -D OpenCV_DIR="$ART/sdk/native/jni/abi-arm64-v8a" \
       -D CMAKE_POLICY_VERSION_MINIMUM=3.5 \
       -D CMAKE_TOOLCHAIN_FILE="$ANDROID_NDK/build/cmake/android.toolchain.cmake" \
-      -D ANDROID_ABI=arm64-v8a -D ANDROID_PLATFORM=android-35 \
+      -D ANDROID_ABI=arm64-v8a -D ANDROID_PLATFORM=android-29 \
       -D ANDROID_STL=c++_shared \
       -D OPENCVSHARP_BUILD_SHARED=ON
     cmake --build "$STAGE/build" -j"$JOBS"
